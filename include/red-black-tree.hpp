@@ -51,7 +51,7 @@ public:
     {
         std::pair<const Key, T> data;
         Color color;
-        std::unique_ptr<Node, NodeDeleter> left; // unique_ptr сразу удаляется когда не нужен
+        std::unique_ptr<Node, NodeDeleter> left;
         std::unique_ptr<Node, NodeDeleter> right;
         Node* parent;
 
