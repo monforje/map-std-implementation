@@ -1,5 +1,5 @@
 #include <iostream>
-#include "include/map.hpp"
+#include "../include/map.hpp"
 
 void print_map(const mystl::map<int, std::string>& m, const std::string& label = "map") {
     std::cout << label << " contents:\n";

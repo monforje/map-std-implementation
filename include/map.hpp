@@ -334,13 +334,11 @@ namespace mystl {
             return count;
         }
 
-
         void clear() { tree.clear(); }
 
         void insert_or_assign(const key_type& key, const mapped_type& value) 
         {
             auto it = find(key);
-
             if (it != end())
                 it.node->data.second = value;
             else
@@ -359,7 +357,6 @@ namespace mystl {
             auto it = find(key);
             if (it != end())
                 return {it, false};
-
             mapped_type value(std::forward<Args>(args)...);
             insert(std::make_pair(key, value));
             return {find(key), true};
@@ -370,7 +367,6 @@ namespace mystl {
             auto it = find(key);
             if (it == end())
                 throw std::out_of_range("Key not found");
-
             value_type val = *it;
             erase(key);
             return val;
@@ -389,7 +385,6 @@ namespace mystl {
             for (auto it = source.begin(); it != source.end(); ) 
             {
                 auto current = it++;
-
                 if (!contains(current->first)) 
                 {
                     insert(*current);
@@ -409,40 +404,36 @@ namespace mystl {
         {
             auto current = tree.getRoot();
             node_type* candidate = nullptr;
-
             while (current) 
             {
                 if (!get_compare()(current->data.first, key)) 
                 {
                     candidate = current;
-                    current = current->left.get();
+                    current = current->left;
                 } 
                 else 
                 {
-                    current = current->right.get();
+                    current = current->right;
                 }
             }
-
             return iterator(candidate);
         }
         const_iterator lower_bound(const key_type& key) const 
         {
             auto current = tree.getRoot();
             node_type* candidate = nullptr;
-
             while (current) 
             {
                 if (!get_compare()(current->data.first, key)) 
                 {
                     candidate = current;
-                    current = current->left.get();
+                    current = current->left;
                 } 
                 else 
                 {
-                    current = current->right.get();
+                    current = current->right;
                 }
             }
-
             return const_iterator(candidate);
         }
 
@@ -450,40 +441,36 @@ namespace mystl {
         {
             auto current = tree.getRoot();
             node_type* candidate = nullptr;
-
             while (current) 
             {
                 if (get_compare()(key, current->data.first)) 
                 {
                     candidate = current;
-                    current = current->left.get();
+                    current = current->left;
                 } 
                 else 
                 {
-                    current = current->right.get();
+                    current = current->right;
                 }
             }
-
             return iterator(candidate);
         }
         const_iterator upper_bound(const key_type& key) const 
         {
             auto current = tree.getRoot();
             node_type* candidate = nullptr;
-
             while (current) 
             {
                 if (get_compare()(key, current->data.first)) 
                 {
                     candidate = current;
-                    current = current->left.get();
+                    current = current->left;
                 } 
                 else 
                 {
-                    current = current->right.get();
+                    current = current->right;
                 }
             }
-
             return const_iterator(candidate);
         }
 
@@ -492,12 +479,10 @@ namespace mystl {
         struct value_compare 
         {
             value_compare(Compare c) : comp(c) {}
-
             bool operator()(const value_type& lhs, const value_type& rhs) const 
             {
                 return comp(lhs.first, rhs.first);
             }
-
         private:
             Compare comp;
         };
@@ -508,31 +493,24 @@ namespace mystl {
         {
             if (lhs.size() != rhs.size())
                 return false;
-
             auto it1 = lhs.begin();
             auto it2 = rhs.begin();
-
             while (it1 != lhs.end()) 
             {
                 if (*it1 != *it2)
                     return false;
                 ++it1; ++it2;
             }
-
             return true;
         }
 
         friend bool operator!=(const map& lhs, const map& rhs) { return !(lhs == rhs); }
-
         friend bool operator<(const map& lhs, const map& rhs) 
         {
             return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
         }
-
         friend bool operator<=(const map& lhs, const map& rhs) { return !(rhs < lhs); }
-
         friend bool operator>(const map& lhs, const map& rhs) { return rhs < lhs; }
-
         friend bool operator>=(const map& lhs, const map& rhs) { return !(lhs < rhs); }
 
         void swap(map& other) { std::swap(tree, other.tree); }
