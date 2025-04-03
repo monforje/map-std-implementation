@@ -45,14 +45,8 @@ private:
     using NodeAllocator = typename std::allocator_traits<Allocator>::template rebind_alloc<Node>;
     NodeAllocator node_alloc;
 
-#if defined(_MSC_VER)
-  #define FORCE_INLINE __forceinline
-#else
-  #define FORCE_INLINE inline __attribute__((always_inline))
-#endif
-
     // Возвращает указатель на указатель, через который доступен узел (у родителя или root)
-    FORCE_INLINE Node** getLink(Node* x) 
+    Node** getLink(Node* x) 
     {
         if (!x->parent)
             return &root;
@@ -62,7 +56,7 @@ private:
             return &(x->parent->right);
     }
 
-    FORCE_INLINE void leftRotate(Node* x) 
+    void leftRotate(Node* x) 
     {
         if (!x || !x->right)
             return;
@@ -78,7 +72,7 @@ private:
         *xLink = y;
     }
 
-    FORCE_INLINE void rightRotate(Node* y) 
+    void rightRotate(Node* y) 
     {
         if (!y || !y->left)
             return;
@@ -500,7 +494,5 @@ private:
             fixDelete(x);
     }
 };
-
-#undef FORCE_INLINE
 
 #endif // REDBLACKTREE_HPP
